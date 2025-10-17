@@ -9,7 +9,12 @@
   <style>
     body {
       font-family: 'Calibri', sans-serif;
-      background-color: white;
+      background-color: #e5e7eb; /* gray background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
     }
 
     input {
@@ -35,7 +40,7 @@
     }
 
     button:hover {
-      background-color: #3c096c; /* indigo hover */
+      background-color: #800080; /* purple hover */
     }
 
     .success-message {
@@ -47,12 +52,27 @@
       margin-bottom: 10px;
       font-weight: bold;
     }
+
+    /* Remove the box styling */
+    .form-container {
+      width: 100%;
+      max-width: 400px;
+      padding: 0; /* remove padding */
+      box-shadow: none; /* remove shadow */
+      border-radius: 0; /* remove rounded corners */
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #065f46;
+    }
   </style>
 </head>
-<body class="flex items-center justify-center min-h-screen">
+<body>
 
-  <div class="bg-white w-full max-w-md p-8 shadow-lg rounded-lg">
-    <h2 class="text-2xl font-semibold text-center mb-6 text-teal-600">Login</h2>
+  <div class="form-container">
+    <h2>Login</h2>
 
     {% if messages %}
       {% for message in messages %}
@@ -67,7 +87,6 @@
     <form id="loginForm" method="POST" action="">
       {% csrf_token %}
 
-      <!-- Username -->
       <div class="mb-4">
         <input
           type="text"
@@ -78,7 +97,6 @@
         />
       </div>
 
-    
       <div class="mb-4">
         <input
           type="password"
@@ -126,7 +144,6 @@
         event.preventDefault();
       }
     });
-
 
     [username, password].forEach(input => {
       input.addEventListener('input', () => {

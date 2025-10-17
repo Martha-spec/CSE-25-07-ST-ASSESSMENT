@@ -63,7 +63,7 @@
     }
 
     .signup-container button:hover {
-      background-color: #3c096c; /* indigo hover */
+      background-color: #800080; /* purple hover */
     }
 
     .message {
@@ -157,11 +157,10 @@
       }
 
       if(valid) {
-        
         fields.forEach(input => {
           input.value = '';
           input.classList.remove('success');
-        })
+        });
 
         successMessage.style.display = 'block';
 
