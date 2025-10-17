@@ -104,7 +104,7 @@
   <div class="signup-container">
     <h2>Signup</h2>
 
-    <!-- Success message container -->
+    
     <div id="successMessage" class="message success-message" style="display: none;">
       Account created successfully!
     </div>
@@ -134,7 +134,7 @@
     const fields = [fullName, email, phone, password, confirmPassword];
 
     form.addEventListener('submit', function(event) {
-      event.preventDefault(); // stop default form submission
+      event.preventDefault(); 
       let valid = true;
 
       fields.forEach(input => {
