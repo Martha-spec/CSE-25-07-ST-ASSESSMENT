@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Signup</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #e5e7eb; /* grey background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .signup-container {
+      width: 100%;
+      max-width: 400px;
+      position: relative;
+    }
+
+    .signup-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .signup-container input {
+      width: 100%;
+      padding: 12px 15px;
+      margin: 10px 0;
+      border: 2px solid #10b981; /* default green */
+      border-radius: 4px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      background-color: #ffffff; /* keep input white */
+    }
+
+    .signup-container input.error {
+      border-color: #ef4444; /* red if empty on submit */
+    }
+
+    .signup-container input.success {
+      border-color: #10b981; /* green after typing valid input */
+    }
+
+    .signup-container button {
+      width: 100%;
+      padding: 12px;
+      background-color: #3b82f6; /* blue button */
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .signup-container button:hover {
+      background-color: #3c096c; /* indigo hover */
+    }
+
+    .message {
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .success-message {
+      background-color: #d1fae5;
+      color: #065f46;
+    }
+
+    .error-message {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .signup-container p {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .signup-container p a {
+      color: #3f51b5;
+      text-decoration: none;
+    }
+
+    .signup-container p a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <h2>Signup</h2>
+
+    <!-- Success message container -->
+    <div id="successMessage" class="message success-message" style="display: none;">
+      Account created successfully!
+    </div>
+
+    <form id="signupForm" method="POST" action="">
+      {% csrf_token %}
+      <input type="text" id="fullName" name="full_name" placeholder="Full Name">
+      <input type="email" id="email" name="email" placeholder="Email">
+      <input type="tel" id="phone" name="phone" placeholder="Phone Number">
+      <input type="password" id="password" name="password1" placeholder="Password">
+      <input type="password" id="confirmPassword" name="password2" placeholder="Confirm Password">
+      <button type="submit">SIGNUP</button>
+    </form>
+
+    <p>Have an account? <a href="{% url 'loginPage' %}">Login</a></p>
+  </div>
+
+  <script>
+    const form = document.getElementById('signupForm');
+    const fullName = document.getElementById('fullName');
+    const email = document.getElementById('email');
+    const phone = document.getElementById('phone');
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirmPassword');
+    const successMessage = document.getElementById('successMessage');
+
+    const fields = [fullName, email, phone, password, confirmPassword];
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault(); // stop default form submission
+      let valid = true;
+
+      fields.forEach(input => {
+        if (input.value.trim() === '') {
+          input.classList.add('error');
+          input.classList.remove('success');
+          valid = false;
+        } else {
+          input.classList.remove('error');
+          input.classList.add('success');
+        }
+      });
+
+      if(password.value !== confirmPassword.value) {
+        password.classList.add('error');
+        confirmPassword.classList.add('error');
+        password.classList.remove('success');
+        confirmPassword.classList.remove('success');
+        valid = false;
+      }
+
+      if(valid) {
+        
+        fields.forEach(input => {
+          input.value = '';
+          input.classList.remove('success');
+        })
+
+        successMessage.style.display = 'block';
+
+        setTimeout(() => {
+          successMessage.style.display = 'none';
+        }, 3000);
+      }
+    });
+
+    fields.forEach(input => {
+      input.addEventListener('input', () => {
+        if (input.value.trim() !== '') {
+          input.classList.remove('error');
+          input.classList.add('success');
+        } else {
+          input.classList.remove('success');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

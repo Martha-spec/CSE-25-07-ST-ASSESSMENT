@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Calibri', sans-serif;
+      background-color: white;
+    }
+
+    input {
+      border: 2px solid #10b981; /* green by default */
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #10b981;
+      box-shadow: 0 0 5px #10b981;
+    }
+
+    input.error {
+      border-color: #ef4444; /* red */
+    }
+
+    input.success {
+      border-color: #10b981; /* green after valid input */
+    }
+
+    button {
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #3c096c; /* indigo hover */
+    }
+
+    .success-message {
+      background-color: #d1fae5;
+      color: #065f46;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+  <div class="bg-white w-full max-w-md p-8 shadow-lg rounded-lg">
+    <h2 class="text-2xl font-semibold text-center mb-6 text-teal-600">Login</h2>
+
+    {% if messages %}
+      {% for message in messages %}
+        {% if message.tags == 'success' %}
+          <div class="success-message">{{ message }}</div>
+        {% else %}
+          <div class="text-red-500 text-center mb-4">{{ message }}</div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    <form id="loginForm" method="POST" action="">
+      {% csrf_token %}
+
+      <!-- Username -->
+      <div class="mb-4">
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Email or Phone Number"
+          class="w-full px-4 py-3 rounded-md focus:outline-none"
+        />
+      </div>
+
+    
+      <div class="mb-4">
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Password"
+          class="w-full px-4 py-3 rounded-md focus:outline-none"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="w-full bg-blue-300 text-white font-semibold py-3 rounded-md"
+      >
+        Login
+      </button>
+    </form>
+
+    <p class="text-center text-sm text-gray-600 mt-5">
+      Don't have an account? 
+      <a href="{% url 'signupPage' %}" class="text-teal-500 hover:underline">Signup</a>
+    </p>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const username = document.getElementById('username');
+    const password = document.getElementById('password');
+
+    form.addEventListener('submit', function(event) {
+      let valid = true;
+
+      [username, password].forEach(input => {
+        if (input.value.trim() === '') {
+          input.classList.add('error');
+          input.classList.remove('success');
+          valid = false;
+        } else {
+          input.classList.remove('error');
+          input.classList.add('success');
+        }
+      });
+
+      if (!valid) {
+        event.preventDefault();
+      }
+    });
+
+
+    [username, password].forEach(input => {
+      input.addEventListener('input', () => {
+        if (input.value.trim() !== '') {
+          input.classList.remove('error');
+          input.classList.add('success');
+        } else {
+          input.classList.remove('success');
+          input.classList.add('error');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
